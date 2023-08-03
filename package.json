@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "@antv/f-my": "^1.0.3",
+    "@antv/f-wx": "^1.0.3",
+    "@antv/f2": "^4.0.46"
+  },
+  "name": "calculate_home",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.22.5"
+  }
+}
