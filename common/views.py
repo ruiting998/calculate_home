@@ -64,7 +64,8 @@ def pull_numbers_by_issueCount(response):
 
     init_params["issueCount"]=response.GET["num"]
     print(init_params)
-    response =requests.get(url=normal_url, params=init_params, headers=headers).json()
+    response =send_request(init_params).json()
+    #requests.get(url=normal_url, params=init_params, headers=headers).json()
     #send_request(init_params)
 
     print("===============================response================")
