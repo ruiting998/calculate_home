@@ -1,3 +1,4 @@
+
 import json
 import string
 
@@ -9,16 +10,29 @@ from datetime import datetime
 from common.models import Numbers
 import numpy as np
 
-#基础路径issueCount=1&issueStart=&issueEnd=&dayStart=&dayEnd=&pageNo=1&pageSize=30&week=&systemType=PC"
-normal_url = "http://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice"
+from tools.ip_poxy import test_ip,send_request
+
+import requests
+from fake_useragent import UserAgent
+headers={'User-Agent':"PostmanRuntime/7.32.3"}
+# header={
+#     "Cookie":"HMF_CI=5ab607815805402001c2a8b6ca5869054459a662cb12494f115e71f590f3ef380c3366cb46321529ede85194e0dbcd9bed3bf31aa1b8c9a325cc13d5dcc7707b08"
+# }
+normal_url ="http://www.cwl.gov.cn/cwl_admin/front/cwlkj/search/kjxx/findDrawNotice"
 issueCount=10
 init_params={
-    "name":"kl8",#双色球
-    "issueCount":issueCount,#默认期数 1
+    "name":"kl8",
+    "issueCount":issueCount,
     "pageNo":1,
     "pageSize":100,
     "systemType":"PC"
 }
+
+
+
+# proxies = {'http': 'http://{}'.format(),
+#            'https': 'https://{}'.format(str(send_request())),}
+
 # 显示所有的数据
 def list_numbers(request):
     qs=Numbers.objects.values();
@@ -47,8 +61,15 @@ def ask_numbers_by_one_response_issueCount(response):
 def pull_numbers_by_issueCount(response):
     # 多条信息
     print("===============================response================")
+
     init_params["issueCount"]=response.GET["num"]
-    response = requests.get(url=normal_url, params=init_params).json()
+    print(init_params)
+    response =requests.get(url=normal_url, params=init_params, headers=headers).json()
+    #send_request(init_params)
+
+    print("===============================response================")
+    # print(response.content.decode('utf-8'))
+    print("===============================response================")
     responses = response['result']
     fail_insert_list=[]
     for r in responses:
@@ -72,6 +93,7 @@ def ask_numbers_from_db_by_issueCount(response):
     for i in range(0,81):
         number_count.append(0)
     print("============================number_count=====================")
+
 
     try:
         str_list=Numbers.objects.raw(f'''select id,number_str from common_numbers
